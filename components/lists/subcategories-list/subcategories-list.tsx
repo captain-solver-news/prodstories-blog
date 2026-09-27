@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import CategoryBrowser from '@/components/lists/category-browser/category-browser';
+import getCategoryView from '@/lib/actions/get-category-view';
 import type { categories } from '@/lib/payload/generated-schema';
 import getSubcategoriesByCategoryId from '@/lib/actions/get-subcategories-by-category-id';
 import Pager from '@/components/blocks/pager/pager';
 import { SUBCATEGORIES_PER_PAGE, BLOG_PREFIX } from '@/config';
 import styles from './subcategories-list.module.scss';
-import { Container } from '@/components/primitives/container/container';
 
 type PropsType = {
   category: typeof categories.$inferSelect;
@@ -15,7 +15,10 @@ type PropsType = {
 
 export default async function SubcategoriesList(props: PropsType) {
   const { category, page, slugs } = props;
-  const { subcategories, totalCount } = await getSubcategoriesByCategoryId(category.id, page);
+  const [{ subcategories, totalCount }, initialView] = await Promise.all([
+    getSubcategoriesByCategoryId(category.id, page),
+    getCategoryView(),
+  ]);
 
   if (totalCount === 0) {
     notFound();
@@ -24,29 +27,9 @@ export default async function SubcategoriesList(props: PropsType) {
   const parentCategoryPath = `/${BLOG_PREFIX}/${slugs.join('/')}`;
 
   return (
-    <Container className={styles.list}>
-      {subcategories.map((subcat) => (
-        <div key={subcat.id} className={styles.item}>
-          <Link href={`${parentCategoryPath}/${subcat.slug}`} className={styles.link}>
-            {subcat.title}
-            <span className={styles.arrow} aria-hidden="true">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
-            </span>
-          </Link>
-        </div>
-      ))}
+    <div className={styles.list}>
+      <CategoryBrowser categories={subcategories} basePath={parentCategoryPath} initialView={initialView} />
       <Pager page={page} pageLength={SUBCATEGORIES_PER_PAGE} totalLength={totalCount} />
-    </Container>
+    </div>
   );
 }

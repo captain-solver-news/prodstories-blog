@@ -28,6 +28,12 @@ export const Categories: CollectionConfig = {
       maxLength: 255,
     },
     {
+      name: 'coverImage',
+      label: 'Category image',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'slug',
       type: 'text',
       required: true,
