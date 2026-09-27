@@ -134,6 +134,7 @@ export interface UserAuthOperations {
 export interface Category {
   id: string;
   title: string;
+  coverImage?: (string | null) | Media;
   /**
    * One path segment. The full URL is built from the parent chain.
    */
@@ -432,6 +433,7 @@ export interface PayloadMigration {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  coverImage?: T;
   slug?: T;
   parent?: T;
   type?: T;

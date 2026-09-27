@@ -37,6 +37,9 @@ export const categories = pgTable(
   {
     id: uuid('id').defaultRandom().primaryKey(),
     title: varchar('title').notNull(),
+    coverImage: uuid('cover_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
     slug: varchar('slug').notNull(),
     parent: uuid('parent_id').references((): AnyPgColumn => categories.id, {
       onDelete: 'set null',
@@ -53,6 +56,7 @@ export const categories = pgTable(
     createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }).defaultNow().notNull(),
   },
   (columns) => [
+    index('categories_cover_image_idx').on(columns.coverImage),
     index('categories_slug_idx').on(columns.slug),
     index('categories_parent_idx').on(columns.parent),
     index('categories_og_image_media_idx').on(columns.ogImageMedia),
@@ -419,6 +423,11 @@ export const payload_migrations = pgTable(
 );
 
 export const relations_categories = relations(categories, ({ one }) => ({
+  coverImage: one(media, {
+    fields: [categories.coverImage],
+    references: [media.id],
+    relationName: 'coverImage',
+  }),
   parent: one(categories, {
     fields: [categories.parent],
     references: [categories.id],
