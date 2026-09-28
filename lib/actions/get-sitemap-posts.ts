@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { categories, posts } from '@/lib/payload/generated-schema';
-import { Status } from '@/lib/payload/taxonomy';
+import { Status, Type } from '@/lib/payload/taxonomy';
 import timestampToDate from '../utils/timestamp-to-date';
 import { getPayload } from 'payload';
 import config from '@payload-config';
@@ -22,6 +22,7 @@ export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
     WITH RECURSIVE category_tree AS (
       SELECT
         ${categories.id} AS id,
+        ${categories.type} = ${Type.Hidden} AS is_hidden,
         ${categories.slug}::text AS full_path
       FROM ${categories}
       WHERE ${categories.parent} IS NULL
@@ -30,6 +31,7 @@ export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
 
       SELECT
         ${categories.id},
+        ct.is_hidden OR ${categories.type} = ${Type.Hidden},
         (ct.full_path || '/' || ${categories.slug})::text AS full_path
       FROM ${categories}
       JOIN category_tree ct ON ${categories.parent} = ct.id
@@ -40,7 +42,8 @@ export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
     FROM ${posts}
     JOIN category_tree ct ON ${posts.category} = ct.id
     WHERE ${posts.status} = ${Status.Published}
-      AND ${posts.noIndex} IS NOT TRUE;
+      AND ${posts.noIndex} IS NOT TRUE
+      AND NOT ct.is_hidden;
   `);
 
   return rows.map((row) => ({
