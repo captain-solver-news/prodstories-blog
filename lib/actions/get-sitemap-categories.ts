@@ -22,7 +22,7 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
     WITH RECURSIVE category_tree AS (
       SELECT
         ${categories.id} AS id,
-        ${categories.type} AS type,
+        ${categories.type} = ${Type.Hidden} AS is_hidden,
         ${categories.noIndex} AS no_index,
         ${categories.updatedAt} AS updated_at,
         ${categories.slug}::text AS full_path
@@ -33,7 +33,7 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
 
       SELECT
         ${categories.id},
-        ${categories.type},
+        ct.is_hidden OR ${categories.type} = ${Type.Hidden},
         ${categories.noIndex},
         ${categories.updatedAt},
         (ct.full_path || '/' || ${categories.slug})::text AS full_path
@@ -64,7 +64,7 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
     FROM category_tree ct
     LEFT JOIN posts_lastmod pl ON pl.ancestor_id = ct.id
     WHERE ct.no_index IS NOT TRUE
-      AND ct.type <> ${Type.Hidden};
+      AND NOT ct.is_hidden;
   `);
 
   return rows.map((row) => ({
