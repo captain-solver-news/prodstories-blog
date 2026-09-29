@@ -1,42 +1,15 @@
 import type { MetadataRoute } from 'next';
-import { unstable_cache } from 'next/cache';
 import { AUTHOR_PREFIX, BLOG_PREFIX } from '@/config';
 import getSitemapAuthors from '@/lib/actions/get-sitemap-authors';
 import getSitemapCategories from '@/lib/actions/get-sitemap-categories';
 import getSitemapPosts from '@/lib/actions/get-sitemap-posts';
-import { getSiteUrl } from './url';
 
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const dynamicParams = true;
 
-function toXml(entries: MetadataRoute.Sitemap): string {
-  const urls = entries.map((entry) =>
-    [
-      '<url>',
-      `<loc>${escapeXml(entry.url)}</loc>`,
-      ...(entry.lastModified ? [`<lastmod>${new Date(entry.lastModified).toISOString()}</lastmod>`] : []),
-      ...(entry.changeFrequency ? [`<changefreq>${entry.changeFrequency}</changefreq>`] : []),
-      ...(entry.priority !== undefined ? [`<priority>${entry.priority}</priority>`] : []),
-      '</url>',
-    ].join('\n')
-  );
-
-  return [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls,
-    '</urlset>',
-  ].join('\n');
-}
-
-async function buildSitemapXml(): Promise<string> {
-  const siteUrl = getSiteUrl();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const siteUrl = process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000';
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: `${siteUrl}/`,
@@ -97,7 +70,5 @@ async function buildSitemapXml(): Promise<string> {
     priority: 0.5,
   }));
 
-  return toXml([...staticPages, ...categoryPages, ...postPages, ...authorPages]);
+  return [...staticPages, ...categoryPages, ...postPages, ...authorPages];
 }
-
-export const generateSitemapXml = unstable_cache(buildSitemapXml, ['sitemap-xml'], { tags: ['sitemap-data'] });

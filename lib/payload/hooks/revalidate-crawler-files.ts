@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from 'payload';
 
 function revalidate(req: PayloadRequest): void {
@@ -6,7 +6,6 @@ function revalidate(req: PayloadRequest): void {
     revalidatePath('/llms.txt');
     revalidatePath('/llms-full.txt');
     revalidatePath('/sitemap.xml');
-    revalidateTag('sitemap-data', { expire: 0 });
   } catch (error) {
     req.payload.logger.warn(`Skipped revalidation: ${error instanceof Error ? error.message : error}`);
   }
