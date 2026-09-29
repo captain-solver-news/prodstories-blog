@@ -13,6 +13,8 @@ export type SitemapCategoryRow = {
 type SitemapCategoryQueryRow = {
   fullPath: string;
   updatedAt: string | null;
+  type: string;
+  noIndex: boolean | null;
 };
 
 export default async function getSitemapCategories(): Promise<SitemapCategoryRow[]> {
@@ -22,7 +24,7 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
     WITH RECURSIVE category_tree AS (
       SELECT
         ${categories.id} AS id,
-        ${categories.type} = ${Type.Hidden} AS is_hidden,
+        ${categories.type} AS type,
         ${categories.noIndex} AS no_index,
         ${categories.updatedAt} AS updated_at,
         ${categories.slug}::text AS full_path
@@ -33,7 +35,7 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
 
       SELECT
         ${categories.id},
-        ct.is_hidden OR ${categories.type} = ${Type.Hidden},
+        ${categories.type},
         ${categories.noIndex},
         ${categories.updatedAt},
         (ct.full_path || '/' || ${categories.slug})::text AS full_path
@@ -60,15 +62,17 @@ export default async function getSitemapCategories(): Promise<SitemapCategoryRow
     )
     SELECT
       ct.full_path AS "fullPath",
-      greatest(ct.updated_at, pl.updated_at) AS "updatedAt"
+      greatest(ct.updated_at, pl.updated_at) AS "updatedAt",
+      ct.type AS "type",
+      ct.no_index AS "noIndex"
     FROM category_tree ct
-    LEFT JOIN posts_lastmod pl ON pl.ancestor_id = ct.id
-    WHERE ct.no_index IS NOT TRUE
-      AND NOT ct.is_hidden;
+    LEFT JOIN posts_lastmod pl ON pl.ancestor_id = ct.id;
   `);
 
-  return rows.map((row) => ({
-    fullPath: row.fullPath,
-    updatedAt: row.updatedAt ? timestampToDate(row.updatedAt) : null,
-  }));
+  return rows
+    .filter((row) => row.type !== Type.Hidden && row.noIndex !== true)
+    .map((row) => ({
+      fullPath: row.fullPath,
+      updatedAt: row.updatedAt ? timestampToDate(row.updatedAt) : null,
+    }));
 }
