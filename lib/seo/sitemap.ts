@@ -3,9 +3,39 @@ import { AUTHOR_PREFIX, BLOG_PREFIX } from '@/config';
 import getSitemapAuthors from '@/lib/actions/get-sitemap-authors';
 import getSitemapCategories from '@/lib/actions/get-sitemap-categories';
 import getSitemapPosts from '@/lib/actions/get-sitemap-posts';
+import { getSiteUrl } from './url';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000';
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function toXml(entries: MetadataRoute.Sitemap): string {
+  const urls = entries.map((entry) =>
+    [
+      '<url>',
+      `<loc>${escapeXml(entry.url)}</loc>`,
+      ...(entry.lastModified ? [`<lastmod>${new Date(entry.lastModified).toISOString()}</lastmod>`] : []),
+      ...(entry.changeFrequency ? [`<changefreq>${entry.changeFrequency}</changefreq>`] : []),
+      ...(entry.priority !== undefined ? [`<priority>${entry.priority}</priority>`] : []),
+      '</url>',
+    ].join('\n')
+  );
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls,
+    '</urlset>',
+  ].join('\n');
+}
+
+export async function generateSitemapXml(): Promise<string> {
+  const siteUrl = getSiteUrl();
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: `${siteUrl}/`,
@@ -66,5 +96,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...categoryPages, ...postPages, ...authorPages];
+  return toXml([...staticPages, ...categoryPages, ...postPages, ...authorPages]);
 }
