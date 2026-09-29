@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { unstable_cache } from 'next/cache';
 import { AUTHOR_PREFIX, BLOG_PREFIX } from '@/config';
 import getSitemapAuthors from '@/lib/actions/get-sitemap-authors';
 import getSitemapCategories from '@/lib/actions/get-sitemap-categories';
@@ -34,7 +35,7 @@ function toXml(entries: MetadataRoute.Sitemap): string {
   ].join('\n');
 }
 
-export async function generateSitemapXml(): Promise<string> {
+async function buildSitemapXml(): Promise<string> {
   const siteUrl = getSiteUrl();
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -98,3 +99,5 @@ export async function generateSitemapXml(): Promise<string> {
 
   return toXml([...staticPages, ...categoryPages, ...postPages, ...authorPages]);
 }
+
+export const generateSitemapXml = unstable_cache(buildSitemapXml, ['sitemap-xml'], { tags: ['sitemap-data'] });
