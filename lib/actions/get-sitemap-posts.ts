@@ -13,6 +13,9 @@ export type SitemapPostRow = {
 type SitemapPostQueryRow = {
   fullPath: string;
   updatedAt: string | null;
+  type: string;
+  status: string;
+  noIndex: boolean | null;
 };
 
 export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
@@ -22,7 +25,7 @@ export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
     WITH RECURSIVE category_tree AS (
       SELECT
         ${categories.id} AS id,
-        ${categories.type} = ${Type.Hidden} AS is_hidden,
+        ${categories.type} AS type,
         ${categories.slug}::text AS full_path
       FROM ${categories}
       WHERE ${categories.parent} IS NULL
@@ -31,23 +34,25 @@ export default async function getSitemapPosts(): Promise<SitemapPostRow[]> {
 
       SELECT
         ${categories.id},
-        ct.is_hidden OR ${categories.type} = ${Type.Hidden},
+        ${categories.type},
         (ct.full_path || '/' || ${categories.slug})::text AS full_path
       FROM ${categories}
       JOIN category_tree ct ON ${categories.parent} = ct.id
     )
     SELECT
       (ct.full_path || '/' || ${posts.slug})::text AS "fullPath",
-      ${posts.contentUpdatedAt} AS "updatedAt"
+      ${posts.contentUpdatedAt} AS "updatedAt",
+      ct.type AS "type",
+      ${posts.status} AS "status",
+      ${posts.noIndex} AS "noIndex"
     FROM ${posts}
-    JOIN category_tree ct ON ${posts.category} = ct.id
-    WHERE ${posts.status} = ${Status.Published}
-      AND ${posts.noIndex} IS NOT TRUE
-      AND NOT ct.is_hidden;
+    JOIN category_tree ct ON ${posts.category} = ct.id;
   `);
 
-  return rows.map((row) => ({
-    fullPath: row.fullPath,
-    updatedAt: row.updatedAt ? timestampToDate(row.updatedAt) : null,
-  }));
+  return rows
+    .filter((row) => row.type !== Type.Hidden && row.status === Status.Published && row.noIndex !== true)
+    .map((row) => ({
+      fullPath: row.fullPath,
+      updatedAt: row.updatedAt ? timestampToDate(row.updatedAt) : null,
+    }));
 }
