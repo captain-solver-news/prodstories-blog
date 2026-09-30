@@ -144,13 +144,13 @@ export const termsAndConditionsMetadata: Metadata = {
   title: 'Terms and Conditions',
   description: 'Review the terms and conditions for using our website and content.',
   alternates: {
-    canonical: '/terms-and-conditions',
+    canonical: '/terms',
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'Terms and Conditions',
     description: 'Review the terms and conditions for using our website and content.',
-    url: '/terms-and-conditions',
+    url: '/terms',
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -163,5 +163,5 @@ export const termsAndConditionsMetadata: Metadata = {
 export const termsAndConditionsSchema = createStaticPageSchema(
   'Terms and Conditions',
   'Review the terms and conditions for using our website and content.',
-  '/terms-and-conditions'
+  '/terms'
 );
