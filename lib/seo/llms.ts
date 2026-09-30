@@ -111,7 +111,7 @@ export async function generateLlmsTxt(): Promise<string> {
       link('All categories', `/${BLOG_PREFIX}`),
       link('Contact', '/contact'),
       link('Privacy Policy', '/privacy-policy'),
-      link('Terms and Conditions', '/terms-and-conditions'),
+      link('Terms and Conditions', '/terms'),
     ]),
   ];
 
