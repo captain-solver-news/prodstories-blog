@@ -42,7 +42,7 @@ export const FOOTER_LINKS_1 = [
 
 export const FOOTER_LINKS_2 = [
   { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/terms', label: 'Terms And Conditions' },
+  { href: '/terms', label: 'Terms of Use' },
 ] as const;
 
 export const HAMBURGER_MENU_TRANSITION_MS = 220;
@@ -52,7 +52,7 @@ export const HAMBURGER_LINKS = [
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/terms', label: 'Terms And Conditions' },
+  { href: '/terms', label: 'Terms of Use' },
   { href: '/contact', label: 'Contact' },
 ] as const;
 

@@ -141,27 +141,27 @@ export const privacyPolicySchema = createStaticPageSchema(
 );
 
 export const termsAndConditionsMetadata: Metadata = {
-  title: 'Terms and Conditions',
-  description: 'Review the terms and conditions for using our website and content.',
+  title: 'Terms of Use',
+  description: 'Review the terms of use for using our website and content.',
   alternates: {
     canonical: '/terms',
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
-    title: 'Terms and Conditions',
-    description: 'Review the terms and conditions for using our website and content.',
+    title: 'Terms of Use',
+    description: 'Review the terms of use for using our website and content.',
     url: '/terms',
   },
   twitter: {
     ...TWITTER_DEFAULTS,
     card: 'summary',
-    title: 'Terms and Conditions',
-    description: 'Review the terms and conditions for using our website and content.',
+    title: 'Terms of Use',
+    description: 'Review the terms of use for using our website and content.',
   },
 };
 
 export const termsAndConditionsSchema = createStaticPageSchema(
-  'Terms and Conditions',
-  'Review the terms and conditions for using our website and content.',
+  'Terms of Use',
+  'Review the terms of use for using our website and content.',
   '/terms'
 );

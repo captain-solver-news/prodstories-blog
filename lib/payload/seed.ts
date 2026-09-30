@@ -345,7 +345,7 @@ Questions about this Privacy Policy can be sent to the contact address listed on
       title: 'Terms of Use',
       body: `*Last updated: July 9, 2026*
 
-These Terms and Conditions ("Terms") govern your access to and use of The Developer's Signal website. By using the site, you agree to these Terms.
+These Terms of Use ("Terms") govern your access to and use of The Developer's Signal website. By using the site, you agree to these Terms.
 
 ## Use of the Site
 
