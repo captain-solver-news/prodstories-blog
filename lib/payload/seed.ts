@@ -341,8 +341,8 @@ We may update this Privacy Policy from time to time. Changes will be posted on t
 Questions about this Privacy Policy can be sent to the contact address listed on our Contact page.`,
     },
     {
-      id: 'terms-and-conditions',
-      title: 'Terms and Conditions',
+      id: 'terms',
+      title: 'Terms of Use',
       body: `*Last updated: July 9, 2026*
 
 These Terms and Conditions ("Terms") govern your access to and use of The Developer's Signal website. By using the site, you agree to these Terms.
