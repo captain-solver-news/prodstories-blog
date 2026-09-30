@@ -28,6 +28,23 @@ export const richTextConverters: JSXConvertersFunction<NodeTypes> = ({ defaultCo
 
     return <Image src={doc.url} alt={alt} width={doc.width} height={doc.height} sizes={POST_CONTENT_IMAGE_SIZES} />;
   },
+  table: ({ node, nodesToJSX }) => (
+    <table>
+      <tbody>{nodesToJSX({ nodes: node.children })}</tbody>
+    </table>
+  ),
+  tablecell: ({ node, nodesToJSX }) => {
+    const Tag = node.headerState > 0 ? 'th' : 'td';
+
+    return (
+      <Tag
+        colSpan={node.colSpan && node.colSpan > 1 ? node.colSpan : undefined}
+        rowSpan={node.rowSpan && node.rowSpan > 1 ? node.rowSpan : undefined}
+      >
+        {nodesToJSX({ nodes: node.children })}
+      </Tag>
+    );
+  },
   blocks: {
     codeBlock: ({ node }) => (
       <CodeBlock

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload';
-import { BlocksFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
+import { BlocksFeature, EXPERIMENTAL_TableFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import { Status } from '@/lib/payload/taxonomy';
 import { CodeBlock } from '@/lib/payload/blocks/code-block';
 import { setContentUpdatedAt } from '@/lib/payload/hooks/content-updated-at';
@@ -63,6 +63,7 @@ export const Posts: CollectionConfig = {
           ...defaultFeatures.filter((feature) => feature.key !== 'heading'),
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
           BlocksFeature({ blocks: [CodeBlock] }),
+          EXPERIMENTAL_TableFeature(),
         ],
       }),
     },
