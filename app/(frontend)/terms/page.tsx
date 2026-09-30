@@ -5,7 +5,7 @@ import getStaticContent from '@/lib/actions/get-static-content';
 import { StaticPage } from '@/components/wrappers/static-page/static-page';
 
 export default async function TermsAndConditionsPage() {
-  const content = await getStaticContent('terms-and-conditions');
+  const content = await getStaticContent('terms');
 
   return (
     <>
