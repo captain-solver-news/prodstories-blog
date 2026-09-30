@@ -1,12 +1,5 @@
 import type { CollectionConfig } from 'payload';
-import {
-  BoldFeature,
-  ItalicFeature,
-  LinkFeature,
-  ParagraphFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical';
+import { richTextEditor } from '@/lib/payload/editor';
 import {
   revalidateCrawlerFilesAfterChange,
   revalidateCrawlerFilesAfterDelete,
@@ -54,9 +47,7 @@ export const Authors: CollectionConfig = {
       name: 'bio',
       type: 'richText',
       required: true,
-      editor: lexicalEditor({
-        features: [ParagraphFeature(), BoldFeature(), ItalicFeature(), LinkFeature(), InlineToolbarFeature()],
-      }),
+      editor: richTextEditor,
     },
     {
       type: 'collapsible',

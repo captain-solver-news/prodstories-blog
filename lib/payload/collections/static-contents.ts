@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload';
+import { richTextEditor } from '@/lib/payload/editor';
 
 export const StaticContents: CollectionConfig = {
   slug: 'static-contents',
@@ -34,6 +35,7 @@ export const StaticContents: CollectionConfig = {
       name: 'body',
       type: 'richText',
       required: true,
+      editor: richTextEditor,
     },
   ],
 };
