@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload';
-import { BlocksFeature, EXPERIMENTAL_TableFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import { Status } from '@/lib/payload/taxonomy';
-import { CodeBlock } from '@/lib/payload/blocks/code-block';
+import { richTextEditor } from '@/lib/payload/editor';
 import { setContentUpdatedAt } from '@/lib/payload/hooks/content-updated-at';
 import {
   revalidateCrawlerFilesAfterChange,
@@ -58,14 +57,7 @@ export const Posts: CollectionConfig = {
       name: 'body',
       type: 'richText',
       required: true,
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures.filter((feature) => feature.key !== 'heading'),
-          HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-          BlocksFeature({ blocks: [CodeBlock] }),
-          EXPERIMENTAL_TableFeature(),
-        ],
-      }),
+      editor: richTextEditor,
     },
     {
       name: 'status',

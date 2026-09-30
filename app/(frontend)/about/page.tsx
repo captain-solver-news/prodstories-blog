@@ -6,6 +6,7 @@ import { AUTHOR_PREFIX } from '@/config';
 import getStaticContent from '@/lib/actions/get-static-content';
 import getAuthors from '@/lib/actions/get-authors';
 import { RichText } from '@payloadcms/richtext-lexical/react';
+import { richTextConverters } from '@/lib/utils/rich-text-converters';
 import GitHub from '@/components/icons/github';
 import LinkedIn from '@/components/icons/linkedin';
 import styles from './page.module.scss';
@@ -21,7 +22,7 @@ export default async function AboutPage() {
         <header className={styles.hero}>
           <span className={styles.tagline}>Deep-Dive Technical Investigations</span>
           <h1 className={styles.title}>{content.title}</h1>
-          <RichText className={styles.description} data={content.body} />
+          <RichText className="md-prose" data={content.body} converters={richTextConverters} />
         </header>
 
         <section className={styles.authorsSection}>
@@ -63,8 +64,8 @@ export default async function AboutPage() {
                   </h2>
                   <p className={styles.authorRole}>{author.jobTitle}</p>
                   {author.bio && (
-                    <CollapsibleText className={styles.bio}>
-                      <RichText data={author.bio} disableContainer />
+                    <CollapsibleText className={`${styles.bio} md-prose`}>
+                      <RichText data={author.bio} converters={richTextConverters} disableContainer />
                     </CollapsibleText>
                   )}
                   <div className={styles.socialLinks}>

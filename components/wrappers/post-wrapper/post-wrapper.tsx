@@ -85,7 +85,7 @@ export default async function PostWrapper({ post, categorySlugs }: PropsType) {
         </figure>
       )}
 
-      <RichText className="prose" data={post.body} converters={richTextConverters} />
+      <RichText className="md-prose" data={post.body} converters={richTextConverters} />
 
       <div className={styles.footer}>
         {post.authors.map((author) => (

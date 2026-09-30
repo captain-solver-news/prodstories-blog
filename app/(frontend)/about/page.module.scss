@@ -20,19 +20,6 @@
   margin-bottom: 1rem;
 }
 
-.description {
-  composes: t-body from global;
-  color: var(--fg-muted);
-
-  p {
-    margin: 0 0 1rem;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .authorsSection {
   display: flex;
   flex-direction: column;
@@ -157,8 +144,6 @@
 }
 
 .bio {
-  composes: t-body from global;
-  color: var(--fg);
   display: flex;
   flex-direction: column;
   gap: 1rem;

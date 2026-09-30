@@ -4,6 +4,7 @@ import type { Author } from '@/lib/actions/types/author';
 import GitHub from '@/components/icons/github';
 import LinkedIn from '@/components/icons/linkedin';
 import { RichText } from '@payloadcms/richtext-lexical/react';
+import { richTextConverters } from '@/lib/utils/rich-text-converters';
 import { Container } from '@/components/primitives/container/container';
 import styles from './author-wrapper.module.scss';
 
@@ -82,7 +83,9 @@ export default async function AuthorWrapper(props: PropsType) {
           </div>
         </div>
 
-        {author.bio && <RichText className={styles.bio} data={author.bio} />}
+        {author.bio && (
+          <RichText className={`${styles.bio} md-prose`} data={author.bio} converters={richTextConverters} />
+        )}
 
         {(author.githubUrl || author.linkedinUrl) && (
           <div className={styles.socialLinks}>
