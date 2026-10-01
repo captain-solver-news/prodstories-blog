@@ -20,7 +20,7 @@ export default async function AboutPage() {
     <>
       <Container as="article" className={styles.page}>
         <header className={styles.hero}>
-          <span className={styles.tagline}>Deep-Dive Technical Investigations</span>
+          <span className={styles.tagline}>Written by working developers</span>
           <h1 className={styles.title}>{content.title}</h1>
           <RichText className="md-prose" data={content.body} converters={richTextConverters} />
         </header>

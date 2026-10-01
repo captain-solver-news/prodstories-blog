@@ -17,22 +17,20 @@ export default async function HomePage() {
         <div className={styles.gridBg} aria-hidden="true" />
         <Container size="shell" className={styles.heroInner}>
           <div className={styles.content}>
-            <span className={styles.badge}>
-              Independent engineering journal <span>v0.0.1</span>
-            </span>
+            <span className={styles.badge}>Independent engineering journal</span>
             <h1 className={styles.title}>
-              Modern engineering insights for the <span className={styles.accent}>AI paradigm shift.</span>
+              Engineering stories from developers <span className={styles.accent}>building in public.</span>
             </h1>
             <p className={styles.description}>
-              We parse the noise of rapid technical evolution to deliver deep-dive architecture reviews and engineering
-              patterns that actually scale.
+              We share our experience from real projects: what we built, broke, and fixed. The reasoning, the numbers,
+              and the parts that failed.
             </p>
             <div className={styles.actions}>
               <a href="#featured" className={styles.btnPrimary}>
-                Read Latest Articles <span aria-hidden="true">↗</span>
+                Read the latest posts <span aria-hidden="true">↗</span>
               </a>
               <Link href="/blog" className={styles.btnSecondary}>
-                Explore the Blog
+                Browse all posts
               </Link>
             </div>
             <p className={styles.heroNote}>Written by engineers. Grounded in production.</p>
@@ -44,37 +42,39 @@ export default async function HomePage() {
       <section className={styles.metrics}>
         <Container size="shell">
           <div className={styles.metricsHeader}>
-            <span className={styles.eyebrow}>01 / The editorial standard</span>
-            <h2 className={styles.sectionTitle}>Evaluation Metrics</h2>
-            <p className={styles.sectionSubtitle}>How we measure the technical part of each post</p>
+            <span className={styles.eyebrow}>01 / How we write</span>
+            <h2 className={styles.sectionTitle}>Every post is checked before it ships</h2>
+            <p className={styles.sectionSubtitle}>Three rules we hold every article to</p>
           </div>
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
               <div className={styles.metricIcon}>
                 <Image src="/icons/Homepage-1.svg" alt="" width="18" height="18" />
               </div>
-              <h3 className={styles.metricTitle}>Expertise Beyond LLMs</h3>
+              <h3 className={styles.metricTitle}>First-hand only</h3>
               <p className={styles.metricDesc}>
-                The post&apos;s expertise is higher than what a standard LLM can provide, offering deep technical
-                nuance.
+                We only write about tools we&apos;ve run in a real project. Every post comes with evidence: code,
+                screenshots, timings, and costs.
               </p>
             </div>
             <div className={styles.metricCard}>
               <div className={styles.metricIcon}>
                 <Image src="/icons/Homepage-2.svg" alt="" width="20" height="20" />
               </div>
-              <h3 className={styles.metricTitle}>Real-World Foundation</h3>
+              <h3 className={styles.metricTitle}>Failures stay in</h3>
               <p className={styles.metricDesc}>
-                Content is built on real-life examples and production-grade scenarios, not theoretical abstractions.
+                When something broke or didn&apos;t work, we keep it in the post. The dead end is often the most useful
+                part, because now you can skip it.
               </p>
             </div>
             <div className={styles.metricCard}>
               <div className={styles.metricIcon}>
                 <Image src="/icons/Homepage-3.svg" alt="" width="16" height="20" />
               </div>
-              <h3 className={styles.metricTitle}>Subject Matter Authority</h3>
+              <h3 className={styles.metricTitle}>Reviewed, and labeled honestly</h3>
               <p className={styles.metricDesc}>
-                The author has extensive, hands-on experience in the subject matter they are writing about.
+                Our Reviewer skill checks each article for real experience and evidence. When we&apos;re still learning
+                a topic, we say so.
               </p>
             </div>
           </div>
@@ -84,14 +84,14 @@ export default async function HomePage() {
       <section className={styles.authors}>
         <Container size="shell" className={styles.authorsInner}>
           <div className={styles.authorsCopy}>
-            <span className={styles.eyebrow}>02 / The people behind the posts</span>
-            <h2 className={styles.sectionTitle}>The authors are active engineers and programmers</h2>
+            <span className={styles.eyebrow}>02 / Who we write for</span>
+            <h2 className={styles.sectionTitle}>For developers who build their own products</h2>
             <p className={styles.sectionBody}>
-              We don&apos;t employ &quot;content creators.&quot; Our contributors are active software architects, DevOps
-              practitioners, and systems researchers who build the very tech they write about.
+              We write for engineers who ship alone or in a pair, with no colleague to argue a decision with. Think of
+              each post as a second opinion from someone who already tried it.
             </p>
             <Link href="/about" className={styles.learnMore}>
-              Learn more about our team
+              Learn more about us
               <svg
                 width="14"
                 height="14"
@@ -113,8 +113,10 @@ export default async function HomePage() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
               <div>
-                <p className={styles.checkTitle}>Zero AI-Generated Fluff</p>
-                <p className={styles.checkDesc}>Every word is original human expertise, verified for accuracy.</p>
+                <p className={styles.checkTitle}>The reasoning, not just the config</p>
+                <p className={styles.checkDesc}>
+                  Why we chose it, what we rejected, and what we&apos;d do differently.
+                </p>
               </div>
             </div>
             <div className={styles.checkItem}>
@@ -122,10 +124,17 @@ export default async function HomePage() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
               <div>
-                <p className={styles.checkTitle}>Production-Grade Examples</p>
-                <p className={styles.checkDesc}>
-                  No &quot;Hello World.&quot; We focus on complex systems and trade-offs.
-                </p>
+                <p className={styles.checkTitle}>Numbers, not adjectives</p>
+                <p className={styles.checkDesc}>Timings, costs, and what it took to make it work.</p>
+              </div>
+            </div>
+            <div className={styles.checkItem}>
+              <svg className={styles.checkIcon} width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+              </svg>
+              <div>
+                <p className={styles.checkTitle}>Ideas you can use the same evening</p>
+                <p className={styles.checkDesc}>Techniques you can read, understand, and adapt in your own repo.</p>
               </div>
             </div>
           </div>
