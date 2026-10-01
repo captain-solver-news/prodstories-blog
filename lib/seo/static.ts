@@ -15,26 +15,33 @@ function createStaticPageSchema(name: string, description: string, path: string)
 }
 
 export const homeMetadata: Metadata = {
-  title: 'Home',
-  description: 'Explore the latest articles, categories, and guides.',
+  title: 'ProdStories — Engineering stories from developers building in public',
+  description:
+    'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
   alternates: {
     canonical: '/',
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
-    title: 'Home',
-    description: 'Explore the latest articles, categories, and guides.',
+    title: 'ProdStories — Engineering stories from developers building in public',
+    description:
+      'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
     url: '/',
   },
   twitter: {
     ...TWITTER_DEFAULTS,
     card: 'summary',
-    title: 'Home',
-    description: 'Explore the latest articles, categories, and guides.',
+    title: 'ProdStories — Engineering stories from developers building in public',
+    description:
+      'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
   },
 };
 
-export const homeSchema = createStaticPageSchema('Home', 'Explore the latest articles, categories, and guides.', '/');
+export const homeSchema = createStaticPageSchema(
+  'ProdStories — Engineering stories from developers building in public',
+  'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
+  '/'
+);
 
 export const aboutMetadata: Metadata = {
   title: 'About',
