@@ -4,6 +4,7 @@ import type { Author } from '@/lib/actions/types/author';
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext';
 import { WithContext, Person } from 'schema-dts';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
+import { toCanonicalPath } from './url';
 
 const DESCRIPTION_LIMIT = 160;
 
@@ -50,14 +51,14 @@ export function generateAuthorMetadata(author: Author): Metadata {
     title,
     description,
     alternates: {
-      canonical: canonicalPath,
+      canonical: toCanonicalPath(canonicalPath),
     },
     openGraph: {
       ...OPEN_GRAPH_DEFAULTS,
       type: 'profile',
       title,
       description,
-      url: canonicalPath,
+      url: toCanonicalPath(canonicalPath),
       ...(ogImage ? { images: [{ url: ogImage }] } : {}),
     },
     twitter: {

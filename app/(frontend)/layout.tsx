@@ -7,6 +7,7 @@ import '@/styles/typography.scss';
 import { Header } from '@/components/blocks/header/header';
 import { Footer } from '@/components/blocks/footer/footer';
 import { THEME_COOKIE_NAME } from '@/config';
+import { isProduction } from '@/lib/env';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from '@/lib/seo/social';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   openGraph: OPEN_GRAPH_DEFAULTS,
   twitter: TWITTER_DEFAULTS,
+  ...(isProduction() ? {} : { robots: { index: false, follow: false } }),
 };
 
 export default async function RootLayout({

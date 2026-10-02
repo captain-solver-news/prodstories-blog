@@ -54,12 +54,15 @@ Copy `.env.example` to `.env`:
 cp .env.example .env
 ```
 
-| Variable                | Description                                                            |
-| ----------------------- | ---------------------------------------------------------------------- |
-| `PUBLIC_SITE_URL`       | Public base URL, used for canonical URLs, sitemap, robots and llms.txt |
-| `DATABASE_URL`          | PostgreSQL connection string                                           |
-| `PAYLOAD_SECRET`        | Secret for Payload auth — replace with a long random string            |
-| `BLOB_READ_WRITE_TOKEN` | Optional Vercel Blob token for uploads                                 |
+| Variable                | Description                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `APP_ENV`               | `production` or `development` (default). Outside `production` the site is noindexed, robots.txt disallows all, no canonicals |
+| `PUBLIC_SITE_URL`       | Public base URL, used for canonical URLs, sitemap, robots and llms.txt                                                       |
+| `DATABASE_URL`          | PostgreSQL connection string                                                                                                 |
+| `PAYLOAD_SECRET`        | Secret for Payload auth — replace with a long random string                                                                  |
+| `BLOB_READ_WRITE_TOKEN` | Optional Vercel Blob token for uploads                                                                                       |
+| `HTTP_LOGIN`            | Optional HTTP Basic Auth login. Basic Auth is enabled only when `HTTP_LOGIN` or `HTTP_PASSWORD` is set                       |
+| `HTTP_PASSWORD`         | Optional HTTP Basic Auth password                                                                                            |
 
 > **Note:** If you changed the database credentials in `docker-compose.yml`, update `DATABASE_URL` in `.env` accordingly.
 

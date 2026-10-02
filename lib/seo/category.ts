@@ -4,7 +4,7 @@ import type { Category } from '@/lib/actions/types/category';
 import { type CategoryBreadcrumb } from '@/lib/actions/get-category-breadcrumbs';
 import { CollectionPage, Graph } from 'schema-dts';
 import { generateBreadcrumbSchema } from './breadcrumbs';
-import { toAbsoluteUrl } from './url';
+import { toAbsoluteUrl, toCanonicalPath } from './url';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
 
 export function generateCategorySchema(
@@ -40,14 +40,14 @@ export function generateCategoryMetadata(category: Category, slugs: string[]): M
     title,
     description,
     alternates: {
-      canonical: canonicalPath,
+      canonical: toCanonicalPath(canonicalPath),
     },
     ...(category.noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       ...OPEN_GRAPH_DEFAULTS,
       title,
       description,
-      url: canonicalPath,
+      url: toCanonicalPath(canonicalPath),
       ...(ogImage ? { images: [{ url: ogImage }] } : {}),
     },
     twitter: {

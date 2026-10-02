@@ -4,7 +4,7 @@ import { type Post } from '@/lib/actions/types/post';
 import { type CategoryBreadcrumb } from '@/lib/actions/get-category-breadcrumbs';
 import { BlogPosting, Graph, Organization, Person } from 'schema-dts';
 import { generateBreadcrumbSchema } from './breadcrumbs';
-import { toAbsoluteUrl } from './url';
+import { toAbsoluteUrl, toCanonicalPath } from './url';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
 
 const HEADLINE_LIMIT = 110;
@@ -74,7 +74,7 @@ export function generatePostMetadata(post: Post, slugs: string[]): Metadata {
     title,
     description,
     alternates: {
-      canonical: canonicalPath,
+      canonical: toCanonicalPath(canonicalPath),
     },
     ...(post.noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
@@ -82,7 +82,7 @@ export function generatePostMetadata(post: Post, slugs: string[]): Metadata {
       type: 'article',
       title,
       description,
-      url: canonicalPath,
+      url: toCanonicalPath(canonicalPath),
       publishedTime: new Date(post.publishedAt ?? post.createdAt).toISOString(),
       modifiedTime: new Date(post.contentUpdatedAt ?? post.updatedAt).toISOString(),
       ...(post.authors.length
