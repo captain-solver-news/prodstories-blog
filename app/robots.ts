@@ -1,13 +1,13 @@
 import type { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/lib/seo/url';
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = process.env.PUBLIC_SITE_URL;
-
   return {
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: `${getSiteUrl()}/sitemap.xml`,
     rules: {
       userAgent: '*',
-      allow: '/',
+      allow: ['/', '/api/media/file/'],
+      disallow: ['/api/', '/admin'],
     },
   };
 }
