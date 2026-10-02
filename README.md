@@ -1,4 +1,4 @@
-# Prod Stories
+# ProdStories
 
 A Next.js blog with PostgreSQL, Payload CMS, and TypeScript.
 

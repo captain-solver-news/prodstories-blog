@@ -9,7 +9,7 @@ interface LogoProps {
 
 export function Logo({ href = '/', className }: LogoProps) {
   return (
-    <Link href={href} aria-label="Prod Stories — home" className={[styles.logo, className].filter(Boolean).join(' ')}>
+    <Link href={href} aria-label="ProdStories — home" className={[styles.logo, className].filter(Boolean).join(' ')}>
       <Wordmark className={styles.wordmark} aria-hidden="true" />
     </Link>
   );
