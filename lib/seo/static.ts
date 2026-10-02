@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { WebPage, WithContext } from 'schema-dts';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
+import { toCanonicalPath } from './url';
 
 function createStaticPageSchema(name: string, description: string, path: string): WithContext<WebPage> {
   const siteUrl = process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000';
@@ -19,14 +20,14 @@ export const homeMetadata: Metadata = {
   description:
     'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
   alternates: {
-    canonical: '/',
+    canonical: toCanonicalPath('/'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'ProdStories — Engineering stories from developers building in public',
     description:
       'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
-    url: '/',
+    url: toCanonicalPath('/'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -47,13 +48,13 @@ export const aboutMetadata: Metadata = {
   title: 'About',
   description: 'Learn more about our blog, mission, and editorial approach.',
   alternates: {
-    canonical: '/about',
+    canonical: toCanonicalPath('/about'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'About',
     description: 'Learn more about our blog, mission, and editorial approach.',
-    url: '/about',
+    url: toCanonicalPath('/about'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -73,13 +74,13 @@ export const blogMetadata: Metadata = {
   title: 'Blog',
   description: 'Browse all blog categories and discover published content.',
   alternates: {
-    canonical: '/blog',
+    canonical: toCanonicalPath('/blog'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'Blog',
     description: 'Browse all blog categories and discover published content.',
-    url: '/blog',
+    url: toCanonicalPath('/blog'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -99,13 +100,13 @@ export const contactMetadata: Metadata = {
   title: 'Contact',
   description: 'Get in touch with our team for feedback, questions, or partnerships.',
   alternates: {
-    canonical: '/contact',
+    canonical: toCanonicalPath('/contact'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'Contact',
     description: 'Get in touch with our team for feedback, questions, or partnerships.',
-    url: '/contact',
+    url: toCanonicalPath('/contact'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -125,13 +126,13 @@ export const privacyPolicyMetadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Read how we collect, use, and protect your personal data.',
   alternates: {
-    canonical: '/privacy-policy',
+    canonical: toCanonicalPath('/privacy-policy'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'Privacy Policy',
     description: 'Read how we collect, use, and protect your personal data.',
-    url: '/privacy-policy',
+    url: toCanonicalPath('/privacy-policy'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,
@@ -151,13 +152,13 @@ export const termsAndConditionsMetadata: Metadata = {
   title: 'Terms of Use',
   description: 'Review the terms of use for using our website and content.',
   alternates: {
-    canonical: '/terms',
+    canonical: toCanonicalPath('/terms'),
   },
   openGraph: {
     ...OPEN_GRAPH_DEFAULTS,
     title: 'Terms of Use',
     description: 'Review the terms of use for using our website and content.',
-    url: '/terms',
+    url: toCanonicalPath('/terms'),
   },
   twitter: {
     ...TWITTER_DEFAULTS,

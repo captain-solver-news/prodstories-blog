@@ -12,11 +12,13 @@ import { Posts } from '@/lib/payload/collections/posts';
 import { StaticContents } from '@/lib/payload/collections/static-contents';
 import { Configs } from '@/lib/payload/collections/configs';
 import { Media } from '@/lib/payload/collections/media';
+import { getSiteUrl } from '@/lib/seo/url';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(dirname, '../..');
 
 export default buildConfig({
+  serverURL: getSiteUrl(),
   admin: {
     user: Users.slug,
     importMap: {

@@ -3,12 +3,15 @@ import { AUTHOR_PREFIX, BLOG_PREFIX } from '@/config';
 import getSitemapAuthors from '@/lib/actions/get-sitemap-authors';
 import getSitemapCategories from '@/lib/actions/get-sitemap-categories';
 import getSitemapPosts from '@/lib/actions/get-sitemap-posts';
+import { isProduction } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const dynamicParams = true;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!isProduction()) return [];
+
   const siteUrl = process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000';
   const staticPages: MetadataRoute.Sitemap = [
     {

@@ -1,6 +1,8 @@
 export { contactMetadata as metadata } from '@/lib/seo/static';
 import { JsonLd } from '@/components/seo/json-ld';
 import { contactSchema } from '@/lib/seo/static';
+import Image from 'next/image';
+import { POST_CONTENT_IMAGE_SIZES } from '@/config';
 import getStaticContent from '@/lib/actions/get-static-content';
 import getDbConfigs from '@/lib/actions/get-db-configs';
 import LinkedInContact from '@/components/icons/linkedin-contact';
@@ -68,13 +70,13 @@ export default async function ContactPage() {
         </div>
 
         <div className={styles.imageWrapper}>
-          <picture>
-            <img
-              className={styles.image}
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaFwgrs6l9kGCdGQTObx6PtuJXcmNyM_1qdPiToAlxRskIQj0elEFS5Y5xF_YI2LCY8eDv8tBSzSqht_1UfvyL1V7InFdX7gY3ohzPqb9UkyyYFM3Jpftt6-JSGggE2i2-cD5yx5_J1g_bvsTl4XysJQGZ2cpuYdknckBO8jVUkcY7euIUKToZC_mE3pdVFL59Q3-VnBKfAIEY4d3reLYKehFurQSv4QXV6nkkGLS2oc6siGjoFVvFF_cShjtAnzdS1vqD1De1pJE"
-              alt="A macro shot of a mechanical keyboard on a dark desk, illuminated by the green glow of an ultra-wide monitor in a dimly lit studio"
-            />
-          </picture>
+          <Image
+            className={styles.image}
+            src="/images/contact-keyboard.png"
+            alt="A macro shot of a mechanical keyboard on a dark desk, illuminated by the green glow of an ultra-wide monitor in a dimly lit studio"
+            fill
+            sizes={POST_CONTENT_IMAGE_SIZES}
+          />
           <div className={styles.imageOverlay} />
         </div>
       </StaticPage>
