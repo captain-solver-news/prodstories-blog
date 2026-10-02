@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Author } from '@/lib/actions/types/author';
 import GitHub from '@/components/icons/github';
@@ -48,27 +49,35 @@ export default async function AuthorWrapper(props: PropsType) {
         <div className={styles.identity}>
           <div className={styles.avatarWrapper}>
             <picture>
-              <img
+              <Image
                 className={`${styles.avatar} ${styles.avatarDark}`}
                 src={author.avatarDarkMedia?.url || FALLBACK_AVATAR}
                 alt={author.name}
+                width={128}
+                height={128}
               />
-              <img
+              <Image
                 className={`${styles.avatar} ${styles.avatarDarkHover}`}
                 src={author.avatarDarkHoveredMedia?.url || FALLBACK_AVATAR}
                 alt={author.name}
+                width={128}
+                height={128}
                 aria-hidden
               />
-              <img
+              <Image
                 className={`${styles.avatar} ${styles.avatarLight}`}
                 src={author.avatarLightMedia?.url || FALLBACK_AVATAR}
                 alt={author.name}
+                width={128}
+                height={128}
                 aria-hidden
               />
-              <img
+              <Image
                 className={`${styles.avatar} ${styles.avatarLightHover}`}
                 src={author.avatarLightHoveredMedia?.url || FALLBACK_AVATAR}
                 alt={author.name}
+                width={128}
+                height={128}
                 aria-hidden
               />
             </picture>

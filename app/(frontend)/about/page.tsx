@@ -1,6 +1,7 @@
 export { aboutMetadata as metadata } from '@/lib/seo/static';
 import { JsonLd } from '@/components/seo/json-ld';
 import { aboutSchema } from '@/lib/seo/static';
+import Image from 'next/image';
 import Link from 'next/link';
 import { AUTHOR_PREFIX } from '@/config';
 import getStaticContent from '@/lib/actions/get-static-content';
@@ -31,27 +32,35 @@ export default async function AboutPage() {
               <div className={styles.cardContent}>
                 <div className={styles.avatarWrapper}>
                   <picture>
-                    <img
+                    <Image
                       className={styles.avatar}
                       src={author.avatarDarkMedia?.url || '/authors/fallback.jpg'}
                       alt={author.name}
+                      width={128}
+                      height={128}
                     />
-                    <img
+                    <Image
                       className={`${styles.avatar} ${styles.avatarDarkHover}`}
                       src={author.avatarDarkHoveredMedia?.url || '/authors/fallback.jpg'}
                       alt={author.name}
+                      width={128}
+                      height={128}
                       aria-hidden
                     />
-                    <img
+                    <Image
                       className={`${styles.avatar} ${styles.avatarLight}`}
                       src={author.avatarLightMedia?.url || '/authors/fallback.jpg'}
                       alt={author.name}
+                      width={128}
+                      height={128}
                       aria-hidden
                     />
-                    <img
+                    <Image
                       className={`${styles.avatar} ${styles.avatarLightHover}`}
                       src={author.avatarLightHoveredMedia?.url || '/authors/fallback.jpg'}
                       alt={author.name}
+                      width={128}
+                      height={128}
                       aria-hidden
                     />
                   </picture>
