@@ -4,6 +4,7 @@ import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
+import { mcpPlugin } from '@payloadcms/plugin-mcp';
 
 import { Users } from '@/lib/payload/collections/users';
 import { Authors } from '@/lib/payload/collections/authors';
@@ -52,6 +53,34 @@ export default buildConfig({
       clientUploads: true,
       addRandomSuffix: true,
       alwaysInsertFields: true,
+    }),
+    mcpPlugin({
+      collections: {
+        posts: {
+          enabled: true,
+          description: 'Blog posts. The body field is Lexical rich text JSON.',
+        },
+        categories: {
+          enabled: true,
+          description: 'Post categories.',
+        },
+        authors: {
+          enabled: true,
+          description: 'Post authors.',
+        },
+        'static-contents': {
+          enabled: true,
+          description: 'Rich text blocks addressed by a stable string id (about, contact, ...).',
+        },
+        configs: {
+          enabled: true,
+          description: 'Key/value settings the site reads by id.',
+        },
+        media: {
+          enabled: { find: true, update: true },
+          description: 'Uploaded images stored in Vercel Blob.',
+        },
+      },
     }),
   ],
 });
