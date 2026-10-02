@@ -17,13 +17,15 @@ const getAuthorBySlugCached = cache(getAuthorBySlug);
 
 export async function generateMetadata(props: PropsType): Promise<Metadata> {
   const { slug } = await props.params;
+  const searchParams = await props.searchParams;
+  const page = Number(searchParams?.page) || 1;
 
   const author = await getAuthorBySlugCached(slug);
   if (!author) {
     return {};
   }
 
-  return generateAuthorMetadata(author);
+  return generateAuthorMetadata(author, page);
 }
 
 export default async function AuthorPage(props: PropsType) {

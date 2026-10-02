@@ -31,7 +31,7 @@ export async function resolveSlugContent(
 
   const category = await getCategoryByFullPath(slugs);
   if (category?.type === Type.DisplayedAll) {
-    const metadata = generateCategoryMetadata(category, slugs);
+    const metadata = generateCategoryMetadata(category, slugs, page);
     const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
     const reactNode = (
       <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>
@@ -41,7 +41,7 @@ export async function resolveSlugContent(
     );
     return { metadata, schema, reactNode };
   } else if (category?.type === Type.DisplayedSubcategories) {
-    const metadata = generateCategoryMetadata(category, slugs);
+    const metadata = generateCategoryMetadata(category, slugs, page);
     const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
     const reactNode = (
       <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>
@@ -50,7 +50,7 @@ export async function resolveSlugContent(
     );
     return { metadata, schema, reactNode };
   } else if (category?.type === Type.DisplayedPosts) {
-    const metadata = generateCategoryMetadata(category, slugs);
+    const metadata = generateCategoryMetadata(category, slugs, page);
     const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
     const reactNode = (
       <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>

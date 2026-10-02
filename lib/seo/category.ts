@@ -4,7 +4,7 @@ import type { Category } from '@/lib/actions/types/category';
 import { type CategoryBreadcrumb } from '@/lib/actions/get-category-breadcrumbs';
 import { CollectionPage, Graph } from 'schema-dts';
 import { generateBreadcrumbSchema } from './breadcrumbs';
-import { toAbsoluteUrl, toCanonicalPath } from './url';
+import { toAbsoluteUrl, toCanonicalPath, toPaginatedPath, toPaginatedTitle } from './url';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
 
 export function generateCategorySchema(
@@ -30,10 +30,10 @@ export function generateCategorySchema(
   };
 }
 
-export function generateCategoryMetadata(category: Category, slugs: string[]): Metadata {
-  const title = category.seoTitle || category.title;
+export function generateCategoryMetadata(category: Category, slugs: string[], page: number = 1): Metadata {
+  const title = toPaginatedTitle(category.seoTitle || category.title, page);
   const description = category.seoDescription ?? category.title;
-  const canonicalPath = `/${BLOG_PREFIX}/${slugs.join('/')}`;
+  const canonicalPath = toPaginatedPath(`/${BLOG_PREFIX}/${slugs.join('/')}`, page);
 
   const ogImage = category.ogImage ?? undefined;
   return {
