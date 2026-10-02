@@ -270,6 +270,52 @@ export const users = pgTable(
   ]
 );
 
+export const payload_mcp_api_keys = pgTable(
+  'payload_mcp_api_keys',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    user: uuid('user_id')
+      .notNull()
+      .references(() => users.id, {
+        onDelete: 'set null',
+      }),
+    label: varchar('label'),
+    description: varchar('description'),
+    posts_find: boolean('posts_find').default(false),
+    posts_create: boolean('posts_create').default(false),
+    posts_update: boolean('posts_update').default(false),
+    posts_delete: boolean('posts_delete').default(false),
+    categories_find: boolean('categories_find').default(false),
+    categories_create: boolean('categories_create').default(false),
+    categories_update: boolean('categories_update').default(false),
+    categories_delete: boolean('categories_delete').default(false),
+    authors_find: boolean('authors_find').default(false),
+    authors_create: boolean('authors_create').default(false),
+    authors_update: boolean('authors_update').default(false),
+    authors_delete: boolean('authors_delete').default(false),
+    staticContents_find: boolean('static_contents_find').default(false),
+    staticContents_create: boolean('static_contents_create').default(false),
+    staticContents_update: boolean('static_contents_update').default(false),
+    staticContents_delete: boolean('static_contents_delete').default(false),
+    configs_find: boolean('configs_find').default(false),
+    configs_create: boolean('configs_create').default(false),
+    configs_update: boolean('configs_update').default(false),
+    configs_delete: boolean('configs_delete').default(false),
+    media_find: boolean('media_find').default(false),
+    media_update: boolean('media_update').default(false),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }).defaultNow().notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }).defaultNow().notNull(),
+    enableAPIKey: boolean('enable_a_p_i_key'),
+    apiKey: varchar('api_key'),
+    apiKeyIndex: varchar('api_key_index'),
+  },
+  (columns) => [
+    index('payload_mcp_api_keys_user_idx').on(columns.user),
+    index('payload_mcp_api_keys_updated_at_idx').on(columns.updatedAt),
+    index('payload_mcp_api_keys_created_at_idx').on(columns.createdAt),
+  ]
+);
+
 export const payload_kv = pgTable(
   'payload_kv',
   {
@@ -309,6 +355,7 @@ export const payload_locked_documents_rels = pgTable(
     authorsID: uuid('authors_id'),
     mediaID: uuid('media_id'),
     usersID: uuid('users_id'),
+    'payload-mcp-api-keysID': uuid('payload_mcp_api_keys_id'),
   },
   (columns) => [
     index('payload_locked_documents_rels_order_idx').on(columns.order),
@@ -321,6 +368,7 @@ export const payload_locked_documents_rels = pgTable(
     index('payload_locked_documents_rels_authors_id_idx').on(columns.authorsID),
     index('payload_locked_documents_rels_media_id_idx').on(columns.mediaID),
     index('payload_locked_documents_rels_users_id_idx').on(columns.usersID),
+    index('payload_locked_documents_rels_payload_mcp_api_keys_id_idx').on(columns['payload-mcp-api-keysID']),
     foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_locked_documents.id],
@@ -361,6 +409,11 @@ export const payload_locked_documents_rels = pgTable(
       foreignColumns: [users.id],
       name: 'payload_locked_documents_rels_users_fk',
     }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['payload-mcp-api-keysID']],
+      foreignColumns: [payload_mcp_api_keys.id],
+      name: 'payload_locked_documents_rels_payload_mcp_api_keys_fk',
+    }).onDelete('cascade'),
   ]
 );
 
@@ -388,12 +441,14 @@ export const payload_preferences_rels = pgTable(
     parent: uuid('parent_id').notNull(),
     path: varchar('path').notNull(),
     usersID: uuid('users_id'),
+    'payload-mcp-api-keysID': uuid('payload_mcp_api_keys_id'),
   },
   (columns) => [
     index('payload_preferences_rels_order_idx').on(columns.order),
     index('payload_preferences_rels_parent_idx').on(columns.parent),
     index('payload_preferences_rels_path_idx').on(columns.path),
     index('payload_preferences_rels_users_id_idx').on(columns.usersID),
+    index('payload_preferences_rels_payload_mcp_api_keys_id_idx').on(columns['payload-mcp-api-keysID']),
     foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_preferences.id],
@@ -403,6 +458,11 @@ export const payload_preferences_rels = pgTable(
       columns: [columns['usersID']],
       foreignColumns: [users.id],
       name: 'payload_preferences_rels_users_fk',
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [columns['payload-mcp-api-keysID']],
+      foreignColumns: [payload_mcp_api_keys.id],
+      name: 'payload_preferences_rels_payload_mcp_api_keys_fk',
     }).onDelete('cascade'),
   ]
 );
@@ -508,6 +568,13 @@ export const relations_users = relations(users, ({ many }) => ({
     relationName: 'sessions',
   }),
 }));
+export const relations_payload_mcp_api_keys = relations(payload_mcp_api_keys, ({ one }) => ({
+  user: one(users, {
+    fields: [payload_mcp_api_keys.user],
+    references: [users.id],
+    relationName: 'user',
+  }),
+}));
 export const relations_payload_kv = relations(payload_kv, () => ({}));
 export const relations_payload_locked_documents_rels = relations(payload_locked_documents_rels, ({ one }) => ({
   parent: one(payload_locked_documents, {
@@ -550,6 +617,11 @@ export const relations_payload_locked_documents_rels = relations(payload_locked_
     references: [users.id],
     relationName: 'users',
   }),
+  'payload-mcp-api-keysID': one(payload_mcp_api_keys, {
+    fields: [payload_locked_documents_rels['payload-mcp-api-keysID']],
+    references: [payload_mcp_api_keys.id],
+    relationName: 'payload-mcp-api-keys',
+  }),
 }));
 export const relations_payload_locked_documents = relations(payload_locked_documents, ({ many }) => ({
   _rels: many(payload_locked_documents_rels, {
@@ -566,6 +638,11 @@ export const relations_payload_preferences_rels = relations(payload_preferences_
     fields: [payload_preferences_rels.usersID],
     references: [users.id],
     relationName: 'users',
+  }),
+  'payload-mcp-api-keysID': one(payload_mcp_api_keys, {
+    fields: [payload_preferences_rels['payload-mcp-api-keysID']],
+    references: [payload_mcp_api_keys.id],
+    relationName: 'payload-mcp-api-keys',
   }),
 }));
 export const relations_payload_preferences = relations(payload_preferences, ({ many }) => ({
@@ -587,6 +664,7 @@ type DatabaseSchema = {
   media: typeof media;
   users_sessions: typeof users_sessions;
   users: typeof users;
+  payload_mcp_api_keys: typeof payload_mcp_api_keys;
   payload_kv: typeof payload_kv;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
@@ -602,6 +680,7 @@ type DatabaseSchema = {
   relations_media: typeof relations_media;
   relations_users_sessions: typeof relations_users_sessions;
   relations_users: typeof relations_users;
+  relations_payload_mcp_api_keys: typeof relations_payload_mcp_api_keys;
   relations_payload_kv: typeof relations_payload_kv;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
