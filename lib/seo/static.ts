@@ -16,7 +16,7 @@ function createStaticPageSchema(name: string, description: string, path: string)
 }
 
 export const homeMetadata: Metadata = {
-  title: 'ProdStories — Engineering stories from developers building in public',
+  title: { absolute: 'ProdStories — Engineering stories from developers building in public' },
   description:
     'Engineering stories from working developers: what we built, broke, and fixed in real projects, with the reasoning and the numbers.',
   alternates: {

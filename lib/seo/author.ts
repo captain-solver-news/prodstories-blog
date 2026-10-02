@@ -4,7 +4,7 @@ import type { Author } from '@/lib/actions/types/author';
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext';
 import { WithContext, Person } from 'schema-dts';
 import { OPEN_GRAPH_DEFAULTS, TWITTER_DEFAULTS } from './social';
-import { toCanonicalPath } from './url';
+import { toCanonicalPath, toPaginatedPath, toPaginatedTitle } from './url';
 
 const DESCRIPTION_LIMIT = 160;
 
@@ -41,10 +41,10 @@ export function generateAuthorSchema(author: Author): WithContext<Person> {
   };
 }
 
-export function generateAuthorMetadata(author: Author): Metadata {
-  const title = author.name;
+export function generateAuthorMetadata(author: Author, page: number = 1): Metadata {
+  const title = toPaginatedTitle(author.name, page);
   const description = authorDescription(author);
-  const canonicalPath = `/${AUTHOR_PREFIX}/${author.slug}`;
+  const canonicalPath = toPaginatedPath(`/${AUTHOR_PREFIX}/${author.slug}`, page);
 
   const ogImage = author.avatarDarkMedia?.url ?? undefined;
   return {
