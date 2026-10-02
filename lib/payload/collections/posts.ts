@@ -15,7 +15,7 @@ export const Posts: CollectionConfig = {
     group: 'Blog',
   },
   access: {
-    read: () => true,
+    read: ({ req }) => (req.user ? true : { status: { equals: Status.Published } }),
   },
   hooks: {
     afterChange: [revalidateCrawlerFilesAfterChange],
