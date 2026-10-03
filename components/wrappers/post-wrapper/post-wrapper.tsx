@@ -6,10 +6,11 @@ import Link from 'next/link';
 import { Container } from '@/components/primitives/container/container';
 import { AUTHOR_PREFIX, POST_CONTENT_IMAGE_SIZES } from '@/config';
 import { richTextConverters } from '@/lib/utils/rich-text-converters';
+import { type CategoryBreadcrumb } from '@/lib/actions/get-category-breadcrumbs';
 
 type PropsType = {
   post: Post;
-  categorySlugs: string[];
+  breadcrumbs: CategoryBreadcrumb[];
 };
 
 function formatDate(timestamp: string): string {
@@ -20,7 +21,7 @@ function formatDate(timestamp: string): string {
   });
 }
 
-export default async function PostWrapper({ post, categorySlugs }: PropsType) {
+export default async function PostWrapper({ post, breadcrumbs }: PropsType) {
   const publishedAt = post.publishedAt ?? post.createdAt;
 
   return (
@@ -29,15 +30,11 @@ export default async function PostWrapper({ post, categorySlugs }: PropsType) {
         <Link href="/blog" className={styles.breadcrumbLink}>
           Blog
         </Link>
-        {categorySlugs.map((slug, i) => {
-          const isLast = i === categorySlugs.length - 1;
-          const label = slug
-            .split('-')
-            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(' ');
-          const href = `/blog/${categorySlugs.slice(0, i + 1).join('/')}`;
+        {breadcrumbs.map(({ title, fullPath }, i) => {
+          const isLast = i === breadcrumbs.length - 1;
+          const href = `/blog/${fullPath}`;
           return (
-            <span key={slug} className={styles.breadcrumbItem}>
+            <span key={fullPath} className={styles.breadcrumbItem}>
               <span className={styles.breadcrumbSeparator} aria-hidden="true">
                 <svg
                   width="14"
@@ -53,10 +50,10 @@ export default async function PostWrapper({ post, categorySlugs }: PropsType) {
                 </svg>
               </span>
               {isLast ? (
-                <span className={styles.breadcrumbCurrent}>{label}</span>
+                <span className={styles.breadcrumbCurrent}>{title}</span>
               ) : (
                 <a href={href} className={styles.breadcrumbLink}>
-                  {label}
+                  {title}
                 </a>
               )}
             </span>

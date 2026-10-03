@@ -2,23 +2,17 @@ import { type ReactNode } from 'react';
 import Link from 'next/link';
 import styles from './category-wrapper.module.scss';
 import { Container } from '@/components/primitives/container/container';
+import { type CategoryBreadcrumb } from '@/lib/actions/get-category-breadcrumbs';
 
 type PropsType = {
   title: string;
   description?: string | null;
-  slugs: string[];
+  breadcrumbs: CategoryBreadcrumb[];
   children?: ReactNode;
 };
 
-function formatSlug(slug: string): string {
-  return slug
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
-
 export default async function CategoryWrapper(props: PropsType) {
-  const { title, description, slugs, children } = props;
+  const { title, description, breadcrumbs, children } = props;
 
   return (
     <Container className={styles.page}>
@@ -27,11 +21,11 @@ export default async function CategoryWrapper(props: PropsType) {
           <Link href="/blog" className={styles.breadcrumbLink}>
             Blog
           </Link>
-          {slugs.map((slug, i) => {
-            const isLast = i === slugs.length - 1;
-            const href = `/blog/${slugs.slice(0, i + 1).join('/')}`;
+          {breadcrumbs.map((crumb, i) => {
+            const isLast = i === breadcrumbs.length - 1;
+            const href = `/blog/${crumb.fullPath}`;
             return (
-              <span key={slug} className={styles.breadcrumbItem}>
+              <span key={crumb.fullPath} className={styles.breadcrumbItem}>
                 <span className={styles.breadcrumbSeparator} aria-hidden="true">
                   <svg
                     width="14"
@@ -47,10 +41,10 @@ export default async function CategoryWrapper(props: PropsType) {
                   </svg>
                 </span>
                 {isLast ? (
-                  <span className={styles.breadcrumbCurrent}>{formatSlug(slug)}</span>
+                  <span className={styles.breadcrumbCurrent}>{crumb.title}</span>
                 ) : (
                   <Link href={href} className={styles.breadcrumbLink}>
-                    {formatSlug(slug)}
+                    {crumb.title}
                   </Link>
                 )}
               </span>
