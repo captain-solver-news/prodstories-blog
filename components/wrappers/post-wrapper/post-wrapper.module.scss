@@ -41,11 +41,6 @@
   opacity: 0.4;
 }
 
-.breadcrumbCurrent {
-  color: var(--accent);
-  font-weight: 600;
-}
-
 .title {
   composes: t-display from global;
   margin-bottom: 1rem;
