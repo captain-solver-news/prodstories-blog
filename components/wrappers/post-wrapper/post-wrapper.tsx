@@ -30,35 +30,27 @@ export default async function PostWrapper({ post, breadcrumbs }: PropsType) {
         <Link href="/blog" className={styles.breadcrumbLink}>
           Blog
         </Link>
-        {breadcrumbs.map(({ title, fullPath }, i) => {
-          const isLast = i === breadcrumbs.length - 1;
-          const href = `/blog/${fullPath}`;
-          return (
-            <span key={fullPath} className={styles.breadcrumbItem}>
-              <span className={styles.breadcrumbSeparator} aria-hidden="true">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </span>
-              {isLast ? (
-                <span className={styles.breadcrumbCurrent}>{title}</span>
-              ) : (
-                <a href={href} className={styles.breadcrumbLink}>
-                  {title}
-                </a>
-              )}
+        {breadcrumbs.map(({ title, fullPath }) => (
+          <span key={fullPath} className={styles.breadcrumbItem}>
+            <span className={styles.breadcrumbSeparator} aria-hidden="true">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
             </span>
-          );
-        })}
+            <Link href={`/blog/${fullPath}`} className={styles.breadcrumbLink}>
+              {title}
+            </Link>
+          </span>
+        ))}
       </nav>
 
       <h1 className={styles.title}>{post.title}</h1>
