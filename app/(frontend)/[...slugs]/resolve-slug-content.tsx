@@ -32,9 +32,10 @@ export async function resolveSlugContent(
   const category = await getCategoryByFullPath(slugs);
   if (category?.type === Type.DisplayedAll) {
     const metadata = generateCategoryMetadata(category, slugs, page);
-    const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
+    const breadcrumbs = await getCategoryBreadcrumbs(slugs);
+    const schema = generateCategorySchema(category, slugs, breadcrumbs);
     const reactNode = (
-      <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>
+      <CategoryWrapper title={category.title} description={category.seoDescription} breadcrumbs={breadcrumbs}>
         <SubcategoriesList category={category} page={page} slugs={slugs} />
         <PostsList category={category} page={page} slugs={slugs} />
       </CategoryWrapper>
@@ -42,18 +43,20 @@ export async function resolveSlugContent(
     return { metadata, schema, reactNode };
   } else if (category?.type === Type.DisplayedSubcategories) {
     const metadata = generateCategoryMetadata(category, slugs, page);
-    const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
+    const breadcrumbs = await getCategoryBreadcrumbs(slugs);
+    const schema = generateCategorySchema(category, slugs, breadcrumbs);
     const reactNode = (
-      <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>
+      <CategoryWrapper title={category.title} description={category.seoDescription} breadcrumbs={breadcrumbs}>
         <SubcategoriesList category={category} page={page} slugs={slugs} />
       </CategoryWrapper>
     );
     return { metadata, schema, reactNode };
   } else if (category?.type === Type.DisplayedPosts) {
     const metadata = generateCategoryMetadata(category, slugs, page);
-    const schema = generateCategorySchema(category, slugs, await getCategoryBreadcrumbs(slugs));
+    const breadcrumbs = await getCategoryBreadcrumbs(slugs);
+    const schema = generateCategorySchema(category, slugs, breadcrumbs);
     const reactNode = (
-      <CategoryWrapper title={category.title} description={category.seoDescription} slugs={slugs}>
+      <CategoryWrapper title={category.title} description={category.seoDescription} breadcrumbs={breadcrumbs}>
         <PostsList category={category} page={page} slugs={slugs} />
       </CategoryWrapper>
     );
@@ -64,9 +67,10 @@ export async function resolveSlugContent(
   if (post?.status === Status.Published) {
     const metadata = generatePostMetadata(post, slugs);
     const categorySlugs = slugs.slice(0, -1);
-    const schema = generatePostSchema(post, slugs, await getCategoryBreadcrumbs(categorySlugs));
+    const breadcrumbs = await getCategoryBreadcrumbs(categorySlugs);
+    const schema = generatePostSchema(post, slugs, breadcrumbs);
 
-    const reactNode = <PostWrapper post={post} categorySlugs={categorySlugs} />;
+    const reactNode = <PostWrapper post={post} breadcrumbs={breadcrumbs} />;
 
     return { metadata, schema, reactNode };
   }

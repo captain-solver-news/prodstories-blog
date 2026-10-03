@@ -10,8 +10,9 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 
 type PostQueryRow = {
-  post: Omit<Post, 'authors' | 'path'>;
+  post: Omit<Post, 'authors' | 'path' | 'categoryTitle'>;
   path: string;
+  categoryTitle: string;
   authors: Author[] | string;
   totalCount: number;
 };
@@ -26,6 +27,7 @@ export default async function getPostsByAuthorId(
     WITH RECURSIVE category_tree AS (
       SELECT
         ${categories.id} AS id,
+        ${categories.title}::text AS title,
         ${categories.slug}::text AS full_path
       FROM ${categories}
       WHERE ${categories.parent} IS NULL
@@ -34,6 +36,7 @@ export default async function getPostsByAuthorId(
 
       SELECT
         ${categories.id},
+        ${categories.title}::text,
         (ct.full_path || '/' || ${categories.slug})::text AS full_path
       FROM ${categories}
       JOIN category_tree ct ON ${categories.parent} = ct.id
@@ -41,6 +44,7 @@ export default async function getPostsByAuthorId(
     SELECT
       ${rowJson(posts, POST_OG_IMAGE_URL)} AS post,
       (ct.full_path || '/' || ${posts.slug})::text AS "path",
+      ct.title AS "categoryTitle",
       COALESCE(
         (
           SELECT json_agg(${rowJson(authors, AUTHOR_AVATAR_MEDIA)} ORDER BY pr_all."order")
@@ -72,6 +76,7 @@ export default async function getPostsByAuthorId(
       ...row.post,
       authors: typeof row.authors === 'string' ? JSON.parse(row.authors) : row.authors,
       path: row.path,
+      categoryTitle: row.categoryTitle,
     })),
     totalCount: rows.length ? rows[0].totalCount : 0,
   };

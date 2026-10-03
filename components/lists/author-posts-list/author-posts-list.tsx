@@ -18,13 +18,6 @@ function formatDate(timestamp: string): string {
   });
 }
 
-function formatSlug(slug: string): string {
-  return slug
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
-
 export default function AuthorPostsList(props: PropsType) {
   const { posts, page, totalCount } = props;
 
@@ -38,13 +31,12 @@ export default function AuthorPostsList(props: PropsType) {
         const isLast = index === posts.length - 1;
         const href = `/${BLOG_PREFIX}/${post.path}`;
         const categorySlugs = post.path?.split('/').slice(0, -1) ?? [];
-        const categorySlug = categorySlugs.at(-1);
 
         return (
           <article key={post.id} className={`${styles.entry} ${isLast ? styles.entryLast : ''}`}>
-            {categorySlug && (
+            {post.categoryTitle && (
               <Link href={`/${BLOG_PREFIX}/${categorySlugs.join('/')}`} className={styles.entryCategory}>
-                {formatSlug(categorySlug)}
+                {post.categoryTitle}
               </Link>
             )}
             <Link href={href} className={styles.entryLink}>

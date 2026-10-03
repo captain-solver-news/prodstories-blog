@@ -7,4 +7,5 @@ export type Post = Omit<typeof posts.$inferSelect, 'body'> & {
   ogImage: string | null;
   authors: Author[];
   path?: string;
+  categoryTitle?: string;
 };
