@@ -102,11 +102,56 @@ Payload prompts for the first user on a fresh install.
 | `pnpm lint`                   | Lint with ESLint                                     |
 | `pnpm format`                 | Format code with Prettier                            |
 | `pnpm db:seed`                | Seed sample content (truncates content tables first) |
+| `pnpm db:export [file]`       | Download a backup of the database (see Backups)      |
+| `pnpm db:import <file>`       | Replace the database content with a backup           |
 | `pnpm payload:migrate`        | Apply pending Payload migrations                     |
 | `pnpm payload:migrate:create` | Create a new migration from config changes           |
 | `pnpm payload:types`          | Regenerate `lib/payload/generated-types.ts`          |
 | `pnpm payload:db-schema`      | Regenerate `lib/payload/generated-schema.ts`         |
 | `pnpm payload:importmap`      | Regenerate the admin import map                      |
+
+## Backups
+
+Open **Backups** in the admin sidebar (`/admin/backups`):
+
+- **Download backup** saves every Payload table as `payload-backup_<site>_<date>.json.gz`.
+- **Import backup** replaces all content with a backup in one transaction. If any row fails, nothing
+  changes. By default it downloads a backup of the current database first. Users, MCP API keys and
+  admin preferences are kept unless you tick the option to replace them too (then you are logged out).
+
+The same works from the terminal against any database in `DATABASE_URL`:
+
+```bash
+DATABASE_URL=<prod-url> pnpm db:export prod.json.gz
+pnpm db:import prod.json.gz              # into the local DATABASE_URL, keeps local users
+pnpm db:import prod.json.gz --with-users # also replaces users and MCP API keys
+```
+
+Import only works between databases with the same applied migrations. Run `pnpm payload:migrate`
+on the target, or check out the matching branch, before importing.
+
+Backups hold database rows only. A backup remembers where its media files live, and the import copies
+every missing file into the storage of the target environment before it touches the database:
+
+| Source → target          | Where files are copied from and to                                         |
+| ------------------------ | -------------------------------------------------------------------------- |
+| Blob → other Blob store  | Public URL of the source store → target store (`BLOB_READ_WRITE_TOKEN`)    |
+| Blob → local (no token)  | Public URL of the source store → local `media/` folder                     |
+| Local → Blob             | Local `media/` folder → target store. Run `pnpm db:import` on that machine |
+| Same Blob store or local | Nothing to copy                                                            |
+
+Files that already exist in the target are skipped, so repeated imports only copy what is new. If a
+file cannot be copied, the import stops and the database stays unchanged. To push a local backup to
+dev or prod, run the CLI with the target credentials:
+
+```bash
+DATABASE_URL=<dev-url> BLOB_READ_WRITE_TOKEN=<dev-token> pnpm db:import local.json.gz
+```
+
+Files that are no longer referenced stay in the target storage. A local or dev environment that uses
+the production `BLOB_READ_WRITE_TOKEN` deletes the production file when you delete a media document
+there. Through the admin, Vercel limits the uploaded backup to 4.5 MB and the import must finish
+within the function time limit. Use `pnpm db:import` for bigger databases or many new files.
 
 ## Project Structure
 
@@ -124,6 +169,7 @@ Payload prompts for the first user on a fresh install.
 │   │   ├── collections/        # Collection definitions — the content model
 │   │   ├── blocks/             # Rich text blocks
 │   │   ├── hooks/              # Collection hooks
+│   │   ├── backup/             # Backup export/import with media files: admin view, endpoints, CLI
 │   │   ├── migrations/         # The only source of DDL for this database
 │   │   ├── taxonomy.ts         # Status/Type values shared with the read layer
 │   │   ├── seed.ts             # Sample content script

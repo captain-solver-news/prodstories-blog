@@ -13,6 +13,7 @@ import { Posts } from '@/lib/payload/collections/posts';
 import { StaticContents } from '@/lib/payload/collections/static-contents';
 import { Configs } from '@/lib/payload/collections/configs';
 import { Media } from '@/lib/payload/collections/media';
+import { backupEndpoints } from '@/lib/payload/backup/endpoints';
 import { getSiteUrl } from '@/lib/seo/url';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,7 +26,19 @@ export default buildConfig({
     importMap: {
       baseDir: projectRoot,
     },
+    components: {
+      afterNavLinks: ['/lib/payload/backup/backups-nav-link#BackupsNavLink'],
+      views: {
+        backups: {
+          Component: '/lib/payload/backup/backups-view#BackupsView',
+          path: '/backups',
+          exact: true,
+          meta: { title: 'Backups' },
+        },
+      },
+    },
   },
+  endpoints: backupEndpoints,
   collections: [Categories, Posts, StaticContents, Configs, Authors, Media, Users],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
