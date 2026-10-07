@@ -79,12 +79,12 @@ export default async function AboutPage() {
                   )}
                   <div className={styles.socialLinks}>
                     {author.githubUrl && (
-                      <a className={styles.socialLink} href={author.githubUrl} aria-label="GitHub">
+                      <a className={styles.socialLink} href={author.githubUrl} target="_blank" aria-label="GitHub">
                         <GitHub className={styles.socialIcon} />
                       </a>
                     )}
                     {author.linkedinUrl && (
-                      <a className={styles.socialLink} href={author.linkedinUrl} aria-label="LinkedIn">
+                      <a className={styles.socialLink} href={author.linkedinUrl} target="_blank" aria-label="LinkedIn">
                         <LinkedIn className={styles.socialIcon} />
                       </a>
                     )}
