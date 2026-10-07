@@ -73,8 +73,12 @@ export default async function HomePage() {
               </div>
               <h3 className={styles.metricTitle}>Reviewed, and labeled honestly</h3>
               <p className={styles.metricDesc}>
-                Our Reviewer skill checks each article for real experience and evidence. When we&apos;re still learning
-                a topic, we say so.
+                Our{' '}
+                <a href="https://github.com/captain-solver-news/skills/tree/main/csn-review" target="_blank">
+                  csn-review
+                </a>{' '}
+                skill checks each article for real experience and evidence. When we&apos;re still learning a topic, we
+                say so.
               </p>
             </div>
           </div>
