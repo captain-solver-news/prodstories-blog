@@ -213,6 +213,9 @@
   font-size: 0.9375rem;
   line-height: 1.75;
   color: var(--fg-muted);
+  a {
+    color: var(--accent);
+  }
 }
 .authors {
   padding-block: clamp(3rem, 6vw, 5rem);
