@@ -1,0 +1,145 @@
+@use '../../../styles/breakpoints' as *;
+
+.chart {
+  margin: 2rem 0;
+  padding: 1.25rem 1rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  color: var(--fg);
+  font-family: var(--ff-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--border);
+  stroke-dasharray: 3 5;
+}
+
+.axis {
+  stroke: var(--fg-subtle);
+}
+
+.tick {
+  fill: var(--fg-subtle);
+  font-family: var(--ff-code);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  fill: var(--fg-muted);
+  font-family: var(--ff-ui);
+  font-size: 14px;
+}
+
+.area {
+  animation: fade-in var(--duration-slow) var(--ease) both;
+}
+
+.shade {
+  opacity: 0.35;
+  animation: fade-in var(--duration-slow) var(--ease) both;
+}
+
+.mean {
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  opacity: 0.8;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw calc(var(--duration-slow) * 2) var(--ease) forwards;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--fg-muted);
+  font-family: var(--ff-ui);
+  font-size: 0.875rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.swatch {
+  width: 1rem;
+  height: 0.1875rem;
+  border-radius: var(--radius-full);
+}
+
+.caption {
+  margin-top: 0.75rem;
+  color: var(--fg-subtle);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@include down(sm) {
+  .chart {
+    padding: 1rem 0.5rem 0.75rem;
+  }
+
+  .tick {
+    font-size: 24px;
+  }
+
+  .label {
+    font-size: 24px;
+  }
+
+  .yLabel {
+    display: none;
+  }
+
+  .line {
+    stroke-width: 3.5;
+  }
+}
+
+@include up(sm) {
+  .chart {
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+}

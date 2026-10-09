@@ -90,7 +90,7 @@ export default buildConfig({
           description: 'Key/value settings the site reads by id.',
         },
         media: {
-          enabled: { find: true, update: true },
+          enabled: { find: true, create: true, update: true, delete: true },
           description: 'Uploaded images stored in Vercel Blob.',
         },
       },

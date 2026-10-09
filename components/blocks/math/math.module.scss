@@ -1,0 +1,14 @@
+.block {
+  margin: 2rem 0;
+  padding-block: 0.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  :global(.katex-display) {
+    margin: 0;
+  }
+}
+
+.inline {
+  white-space: nowrap;
+}

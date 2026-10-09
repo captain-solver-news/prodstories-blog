@@ -1,11 +1,21 @@
 import Image from 'next/image';
-import type { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical';
+import type { DefaultNodeTypes, SerializedBlockNode, SerializedInlineBlockNode } from '@payloadcms/richtext-lexical';
 import type { JSXConvertersFunction } from '@payloadcms/richtext-lexical/react';
-import type { CodeBlock as CodeBlockType } from '@/lib/payload/generated-types';
+import type {
+  CodeBlock as CodeBlockType,
+  GaussianChartBlock as GaussianChartBlockType,
+  InlineMathBlock as InlineMathBlockType,
+  MathBlock as MathBlockType,
+} from '@/lib/payload/generated-types';
 import { CodeBlock } from '@/components/blocks/code-block/code-block';
+import { GaussianChart } from '@/components/blocks/gaussian-chart/gaussian-chart';
+import { MathFormula } from '@/components/blocks/math/math';
 import { POST_CONTENT_IMAGE_SIZES } from '@/config';
 
-type NodeTypes = DefaultNodeTypes | SerializedBlockNode<CodeBlockType>;
+type NodeTypes =
+  | DefaultNodeTypes
+  | SerializedBlockNode<CodeBlockType | MathBlockType | GaussianChartBlockType>
+  | SerializedInlineBlockNode<InlineMathBlockType>;
 
 export const richTextConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
@@ -54,5 +64,20 @@ export const richTextConverters: JSXConvertersFunction<NodeTypes> = ({ defaultCo
         code={node.fields.code}
       />
     ),
+    math: ({ node }) => <MathFormula latex={node.fields.latex} display />,
+    gaussianChart: ({ node }) => (
+      <GaussianChart
+        title={node.fields.title}
+        caption={node.fields.caption}
+        xLabel={node.fields.xLabel}
+        yLabel={node.fields.yLabel}
+        xMin={node.fields.xMin}
+        xMax={node.fields.xMax}
+        curves={node.fields.curves}
+      />
+    ),
+  },
+  inlineBlocks: {
+    inlineMath: ({ node }) => <MathFormula latex={node.fields.latex} />,
   },
 });
