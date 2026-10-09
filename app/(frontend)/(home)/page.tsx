@@ -163,7 +163,7 @@ export default async function HomePage() {
           </div>
           <div className={styles.featuredList}>
             {featuredPosts.map((post) => {
-              const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+              const formattedDate = new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric',

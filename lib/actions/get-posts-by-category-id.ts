@@ -30,7 +30,7 @@ export default async function getPostsByCategoryId(
     .leftJoin(authors, eq(posts_rels.authorsID, authors.id))
     .where(and(eq(posts.category, categoryId), eq(posts.status, Status.Published)))
     .groupBy(posts.id)
-    .orderBy(desc(posts.createdAt))
+    .orderBy(desc(sql`coalesce(${posts.publishedAt}, ${posts.createdAt})`))
     .limit(POSTS_PER_PAGE)
     .offset((page - 1) * POSTS_PER_PAGE);
 

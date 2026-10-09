@@ -11,7 +11,7 @@ export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'category', 'status', 'createdAt'],
+    defaultColumns: ['title', 'slug', 'category', 'status', 'publishedAt'],
     group: 'Blog',
   },
   access: {
