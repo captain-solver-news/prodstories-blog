@@ -31,6 +31,7 @@ export default function AuthorPostsList(props: PropsType) {
         const isLast = index === posts.length - 1;
         const href = `/${BLOG_PREFIX}/${post.path}`;
         const categorySlugs = post.path?.split('/').slice(0, -1) ?? [];
+        const publishedAt = post.publishedAt ?? post.createdAt;
 
         return (
           <article key={post.id} className={`${styles.entry} ${isLast ? styles.entryLast : ''}`}>
@@ -61,8 +62,8 @@ export default function AuthorPostsList(props: PropsType) {
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </Link>
-              <time className={styles.entryDate} dateTime={new Date(post.createdAt).toISOString()}>
-                {formatDate(post.createdAt)}
+              <time className={styles.entryDate} dateTime={new Date(publishedAt).toISOString()}>
+                {formatDate(publishedAt)}
               </time>
             </div>
           </article>

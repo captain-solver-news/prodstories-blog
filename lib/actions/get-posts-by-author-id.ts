@@ -66,7 +66,7 @@ export default async function getPostsByAuthorId(
           AND pr.path = 'authors'
           AND pr.authors_id = ${authorId}
       )
-    ORDER BY ${posts.createdAt} DESC
+    ORDER BY coalesce(${posts.publishedAt}, ${posts.createdAt}) DESC
     LIMIT ${POSTS_PER_PAGE}
     OFFSET ${(page - 1) * POSTS_PER_PAGE};
   `);

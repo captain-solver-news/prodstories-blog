@@ -26,7 +26,7 @@ export default async function getFeaturedPosts(): Promise<Post[]> {
     .leftJoin(authors, eq(posts_rels.authorsID, authors.id))
     .where(and(eq(posts.status, Status.Published), eq(posts.isFeatured, true)))
     .groupBy(posts.id)
-    .orderBy(desc(posts.createdAt));
+    .orderBy(desc(sql`coalesce(${posts.publishedAt}, ${posts.createdAt})`));
 
   const featuredPosts = await Promise.all(
     rows.map(async (row) => ({
