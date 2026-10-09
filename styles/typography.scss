@@ -93,16 +93,29 @@
     overflow-x: auto;
     border-collapse: collapse;
     margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   th,
   td {
-    padding: 0.75rem 1rem;
+    padding: 0.625rem 0.875rem;
     border: 1px solid var(--border);
     text-align: left;
+    vertical-align: top;
+    overflow-wrap: break-word;
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
   }
 
   th {
+    font-family: var(--ff-ui);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    vertical-align: bottom;
     color: var(--fg);
     background: var(--surface);
   }
