@@ -470,9 +470,17 @@ export interface PayloadMcpApiKey {
      */
     find?: boolean | null;
     /**
+     * Allow clients to create media.
+     */
+    create?: boolean | null;
+    /**
      * Allow clients to update media.
      */
     update?: boolean | null;
+    /**
+     * Allow clients to delete media.
+     */
+    delete?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -764,7 +772,9 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
     | T
     | {
         find?: T;
+        create?: T;
         update?: T;
+        delete?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -863,6 +873,68 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'codeBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MathBlock".
+ */
+export interface MathBlock {
+  /**
+   * Rendered as a centered display formula, e.g. f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+   */
+  latex: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'math';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GaussianChartBlock".
+ */
+export interface GaussianChartBlock {
+  title?: string | null;
+  curves: {
+    /**
+     * Defaults to "μ = …, σ = …"
+     */
+    label?: string | null;
+    mean: number;
+    stdDev: number;
+    /**
+     * Optional interval to shade under the curve
+     */
+    shadeFrom?: number | null;
+    shadeTo?: number | null;
+    showMean?: boolean | null;
+    id?: string | null;
+  }[];
+  /**
+   * Empty: smallest μ − 4σ
+   */
+  xMin?: number | null;
+  /**
+   * Empty: largest μ + 4σ
+   */
+  xMax?: number | null;
+  xLabel?: string | null;
+  yLabel?: string | null;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gaussianChart';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InlineMathBlock".
+ */
+export interface InlineMathBlock {
+  /**
+   * Rendered inside the sentence, e.g. \sigma^2
+   */
+  latex: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'inlineMath';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
