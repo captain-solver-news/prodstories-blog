@@ -19,8 +19,16 @@ import { getSiteUrl } from '@/lib/seo/url';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(dirname, '../..');
 
+const vercelOrigins = [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL]
+  .filter((host): host is string => Boolean(host))
+  .map((host) => `https://${host}`);
+
+const trustedOrigins = [...new Set([getSiteUrl(), ...vercelOrigins])];
+
 export default buildConfig({
   serverURL: getSiteUrl(),
+  csrf: trustedOrigins,
+  cors: trustedOrigins,
   admin: {
     user: Users.slug,
     importMap: {
